@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedStyle
+import customtkinter
 
 def city_selection(state):
     # Function to handle city selection based on the state chosen
@@ -13,7 +14,7 @@ def city_selection(state):
     
     # Hide the state buttons
     for state_button in state_buttons:
-        state_button.pack_forget()
+        state_button.destroy()
     
     # Create buttons for each city in the selected state
     for city in cities[state]:
@@ -22,8 +23,6 @@ def city_selection(state):
 
 # Create the main window
 root = tk.Tk()
-
-# Set the window title
 root.title("State and City Selection")
 
 # Create a frame to hold the state and city selection buttons
@@ -38,7 +37,7 @@ state_label.pack(pady=10)
 states = ["California", "New York", "Texas"]  # Add more states as needed
 state_buttons = []
 for state in states:
-    state_button = ttk.Button(selection_frame, text=state, command=lambda s=state: city_selection(s))
+    state_button = customtkinter.CTkButton(selection_frame, text=state, command=lambda s=state: city_selection(s))
     state_button.pack(pady=5)
     state_buttons.append(state_button)
 
