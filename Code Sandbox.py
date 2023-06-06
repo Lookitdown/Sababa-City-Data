@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from ttkthemes import ThemedStyle
 
 def city_selection(state):
     # Function to handle city selection based on the state chosen
@@ -25,14 +26,8 @@ root = tk.Tk()
 # Set the window title
 root.title("State and City Selection")
 
-# Set the style
-style = ttk.Style()
-
-# Configure the style for the buttons
-style.configure("TButton", font=("Helvetica", 12), padding=10)
-
 # Create a frame to hold the state and city selection buttons
-selection_frame = tk.Frame(root)
+selection_frame = ttk.Frame(root)
 selection_frame.pack()
 
 # Create a label for state selection
@@ -46,6 +41,10 @@ for state in states:
     state_button = ttk.Button(selection_frame, text=state, command=lambda s=state: city_selection(s))
     state_button.pack(pady=5)
     state_buttons.append(state_button)
+
+# Set the theme using ThemedStyle
+style = ThemedStyle(root)
+style.set_theme("vista")  # Apply the 'vista' theme
 
 # Start the GUI event loop
 root.mainloop()
