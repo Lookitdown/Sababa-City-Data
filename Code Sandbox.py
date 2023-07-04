@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedStyle
 
+
 def city_selection(state):
     # Function to handle city selection based on the state chosen
     cities = {
@@ -56,33 +57,36 @@ def city_selection(state):
     "West Virginia": ["Charleston", "Huntington", "Morgantown"],
     "Wisconsin": ["Milwaukee", "Madison", "Green Bay"],
     "Wyoming": ["Cheyenne", "Casper", "Laramie"]
+        # ... rest of the cities
     }
-    
+
     # Hide the state buttons
     for state_button in state_buttons:
         state_button.grid_forget()
-    
+
     # Create buttons for each city in the selected state
     for city in cities[state]:
         city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: store_city(c))
         city_button.grid(row=(cities[state].index(city) // 3) + 2, column=cities[state].index(city) % 3, pady=5, padx=5)
 
+
 def store_city(city):
     # Function to store the selected city in a SQLite database
     conn = sqlite3.connect("cities.db")  # Connect to the database
     cursor = conn.cursor()
-    
+
     # Create a table if it doesn't exist
     cursor.execute("CREATE TABLE IF NOT EXISTS selected_cities (city TEXT)")
-    
+
     # Insert the selected city into the table
     cursor.execute("INSERT INTO selected_cities VALUES (?)", (city,))
-    
+
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
-    
+
     print("Selected city:", city)
+
 
 # Create the main window
 root = tk.Tk()
@@ -99,13 +103,15 @@ state_label = ttk.Label(selection_frame, text="Select your state:", font=("Helve
 state_label.grid(row=0, column=0, columnspan=3, pady=10)
 
 # Create buttons for each state in America
-states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
+states = [
+    "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
     "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa",
     "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan",
     "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
     "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
     "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-    "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+    "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"
+]
 
 state_buttons = []
 for index, state in enumerate(states):
@@ -115,7 +121,10 @@ for index, state in enumerate(states):
 
 # Set the theme using ThemedStyle
 style = ThemedStyle(root)
-style.set_theme("vista")  # Apply the 'vista' theme
+style.theme_use("clam")  # Apply the 'clam' theme
+
+# Customize the style if needed
+style.configure("TButton", padding=10, font=("Arial", 12))
 
 # Start the GUI event loop
 root.mainloop()
