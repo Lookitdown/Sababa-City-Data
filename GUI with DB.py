@@ -1,3 +1,4 @@
+import sqlite3
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedStyle
@@ -17,8 +18,25 @@ def city_selection(state):
     
     # Create buttons for each city in the selected state
     for city in cities[state]:
-        city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: print("Selected city:", c))
+        city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: store_city(c))
         city_button.pack(pady=5)
+
+def store_city(city):
+    # Function to store the selected city in a SQLite database
+    conn = sqlite3.connect("cities.db")  # Connect to the database
+    cursor = conn.cursor()
+    
+    # Create a table if it doesn't exist
+    cursor.execute("CREATE TABLE IF NOT EXISTS selected_cities (city TEXT)")
+    
+    # Insert the selected city into the table
+    cursor.execute("INSERT INTO selected_cities VALUES (?)", (city,))
+    
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    
+    print("Selected city:", city)
 
 # Create the main window
 root = tk.Tk()
