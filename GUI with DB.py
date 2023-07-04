@@ -6,7 +6,7 @@ from ttkthemes import ThemedStyle
 def city_selection(state):
     # Function to handle city selection based on the state chosen
     cities = {
-    "Alabama": ["Birmingham", "Montgomery", "Mobile"],
+        "Alabama": ["Birmingham", "Montgomery", "Mobile"],
     "Alaska": ["Anchorage", "Fairbanks", "Juneau"],
     "Arizona": ["Phoenix", "Tucson", "Mesa"],
     "Arkansas": ["Little Rock", "Fort Smith", "Fayetteville"],
@@ -60,12 +60,12 @@ def city_selection(state):
     
     # Hide the state buttons
     for state_button in state_buttons:
-        state_button.pack_forget()
+        state_button.grid_forget()
     
     # Create buttons for each city in the selected state
     for city in cities[state]:
         city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: store_city(c))
-        city_button.pack(pady=5)
+        city_button.grid(row=(cities[state].index(city) // 3) + 2, column=cities[state].index(city) % 3, pady=5, padx=5)
 
 def store_city(city):
     # Function to store the selected city in a SQLite database
@@ -96,7 +96,7 @@ selection_frame.pack()
 
 # Create a label for state selection
 state_label = ttk.Label(selection_frame, text="Select your state:", font=("Helvetica", 14, "bold"))
-state_label.pack(pady=10)
+state_label.grid(row=0, column=0, columnspan=3, pady=10)
 
 # Create buttons for each state in America
 states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
@@ -105,11 +105,12 @@ states = ["Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", 
     "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire",
     "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma",
     "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee",
-    "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]  # Add more states as needed
+    "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming"]
+
 state_buttons = []
-for state in states:
+for index, state in enumerate(states):
     state_button = ttk.Button(selection_frame, text=state, command=lambda s=state: city_selection(s))
-    state_button.pack(pady=5)
+    state_button.grid(row=(index // 5) + 1, column=index % 5, pady=5, padx=5)
     state_buttons.append(state_button)
 
 # Set the theme using ThemedStyle
