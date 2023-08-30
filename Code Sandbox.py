@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedStyle
 
-
 def city_selection(state):
     # Function to handle city selection based on the state chosen
     cities = {
