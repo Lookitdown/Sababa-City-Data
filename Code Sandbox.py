@@ -59,16 +59,43 @@ def city_selection(state):
     "Wyoming": ["Cheyenne", "Casper", "Laramie"]
         # ... rest of the cities
     }
-
-    # Hide the state buttons
-    for state_button in state_buttons:
-        state_button.grid_forget()
+        
+    # Clear the selection frame
+    for widget in selection_frame.winfo_children():
+        widget.destroy()
 
     # Create buttons for each city in the selected state
     for city in cities[state]:
         city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: store_city(c))
         city_button.grid(row=(cities[state].index(city) // 3) + 2, column=cities[state].index(city) % 3, pady=5, padx=5)
 
+    for city in cities[state]:
+        city_button = ttk.Button(selection_frame, text=city, command=lambda c=city: store_city(c))
+        city_button.grid(row=(cities[state].index(city) // 3) + 2, column=cities[state].index(city) % 3, pady=5, padx=5)
+
+    # Create a label for the thank you message
+    thank_you_label = ttk.Label(selection_frame, text=f"Thank you for selecting a city in {state}!",
+                                font=("Helvetica", 12, "bold"))
+    thank_you_label.grid(row=len(cities[state]) // 3 + 2, columnspan=3, pady=10)
+
+    # Create the "Return to Home" button
+    return_button = ttk.Button(selection_frame, text="Return to Home", command=reset_selection)
+    return_button.grid(row=len(cities[state]) // 3 + 3, columnspan=3, pady=10)
+
+def reset_selection():
+    # Clear the thank you message and return to the state selection buttons
+    for widget in selection_frame.winfo_children():
+        widget.destroy()
+    # Clear the state_buttons list
+    state_buttons.clear()
+        # Recreate the state buttons
+    for index, state in enumerate(states):
+        state_button = ttk.Button(selection_frame, text=state, command=lambda s=state: city_selection(s))
+        state_button.grid(row=(index // 5) + 1, column=index % 5, pady=5, padx=5)
+        state_buttons.append(state_button)
+
+    for state_button in state_buttons:
+        state_button.grid()
 
 def store_city(city):
     # Function to store the selected city in a SQLite database
